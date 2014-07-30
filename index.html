@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ember Blog App</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/yeti.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.0/animate.min.css" rel='stylesheet' type='text/css'>
+  <style>
+        /* Space out content a bit */
+        body {
+          padding-top: 20px;
+          padding-bottom: 20px;
+        }
+
+        /* Everything but the jumbotron gets side spacing for mobile first views */
+        .header,
+        .marketing,
+        .footer {
+          padding-right: 15px;
+          padding-left: 15px;
+        }
+
+        /* Custom page header */
+        .header {
+          border-bottom: 1px solid #e5e5e5;
+          width: 104%;
+        }
+        /* Make the masthead heading the same height as the navigation */
+        .header h3 {
+          padding-bottom: 19px;
+          margin-top: 0;
+          margin-bottom: 0;
+          line-height: 40px;
+        }
+
+        /* Custom page footer */
+        .footer {
+          padding-top: 19px;
+          color: #777;
+          border-top: 1px solid #e5e5e5;
+        }
+
+        .startHidden {
+          opacity: 0;
+        }
+
+        img {
+          width: 100%;
+        }
+
+        /* Customize container */
+        @media (min-width: 768px) {
+          .container {
+            max-width: 1000px;
+          }
+        }
+        .container-narrow > hr {
+          margin: 30px 0;
+        }
+
+        /* Main marketing message and sign up button */
+        .jumbotron {
+          text-align: center;
+          border-bottom: 1px solid #e5e5e5;
+        }
+        .jumbotron .btn {
+          padding: 14px 24px;
+          font-size: 21px;
+        }
+
+        /* Supporting marketing content */
+        .marketing {
+          margin: 40px 0;
+        }
+        .marketing p + h4 {
+          margin-top: 28px;
+        }
+
+        /* Responsive: Portrait tablets and up */
+        @media screen and (min-width: 768px) {
+          /* Remove the padding we set earlier */
+          .header,
+          .marketing,
+          .footer {
+            padding-right: 0;
+            padding-left: 0;
+          }
+          /* Space out the masthead */
+          .header {
+            margin-bottom: 30px;
+          }
+          /* Remove the bottom border on the jumbotron for visual effect */
+          .jumbotron {
+            border-bottom: 0;
+          }
+        }
+    </style>
+</head>
+<body>
+  <script type="text/x-handlebars">
+    <div class="container">
+      <div class="header wow fadeInUp">
+        <ul class="nav nav-pills pull-right">
+          {{#link-to 'index' tagName="li"}}<a>Home</a>{{/link-to}}
+          {{#link-to 'posts' tagName="li"}}<a>Posts</a>{{/link-to}}
+          {{#link-to 'about' tagName="li"}}<a>About</a>{{/link-to}}
+        </ul>
+        <a class="brand" href="#"><h3 class="text-muted">EMBER BLOG APP</h3></a>
+      </div>
+    {{outlet}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="posts">
+    <div class="container wow fadeInUp">
+      <div class="row">
+        <div class="col-lg-3">
+          <table class="table">
+            <thead>
+              <tr><th>Recent Posts</th></tr>
+              {{#each}}
+                <tr>
+                  <td>
+                    {{#link-to 'post' this}}
+                      {{title}} <small class="muted"> by {{author.name}}</small>
+                    {{/link-to}}
+                  </td>
+                </tr>
+              {{/each}}
+            </thead>
+          </table>
+        </div>
+          {{outlet}}
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="post">
+    <div class="col-lg-9 wow fadeInUp">
+      {{#if isEditing}}
+        {{partial 'post/edit'}}
+        <button {{action 'doneEditing'}} class="btn btn-primary pull-right">Done</button>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+      {{else}}
+        <button {{action 'edit'}} class="btn btn-primary btn-sm pull-right">Edit</button>
+      {{/if}}
+      <h1>{{title}}</h1>
+      <h2>by {{author.name}} <small class="muted">({{format-date date}})</small></h2>
+      <hr>
+      <div class="below-the-fold">
+        {{format-markdown body}}
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="post/_edit">
+    <div class="form-group">
+        <label for="title">Title</label>
+        {{input type="text" class="form-control" id="title" value=title}}
+    </div>
+    <div class="form-group">
+        <label for="post">Post</label>
+        {{textarea class="form-control" id="post" rows="7" value=body}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="about">
+    <div class="container wow fadeInUp">
+      <div class="row">
+        <h3>LONG-TIME DEVELOPER, DESIGNER, & WELL-ROUNDED NERD.</h3>
+        <p>I'm a long time Developer, IT Professional, Designer, and well-rounded nerd.</p>
+ 
+        <p>I've enjoyed working in all aspects of web development and design, for startups, government clients, small businesses, fortune 500 companies, as well as my own ventures.</p>
+ 
+        <p>Having traveled to hundreds of world cities in 43 countries, I find nothing more fascinating than the unique peoples, cultures, and experiences which comprise the planet we live on, and nothing more rewarding than the opportunity to learn from unique and interesting individuals.</p>
+        <p>My official homepage is located at <a href="http://www.jamesfuthey.com">www.jamesfuthey.com</a>.</p>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="index">
+    <div class="jumbotron wow fadeInUp">
+          <img src="http://37.media.tumblr.com/bddaeb8fe12eda6bb40cf6a0a18d9efa/tumblr_n8zm8ndGiY1st5lhmo1_1280.jpg" style="box-shadow: 2px 2px 2px #fff;max-width:700px;">
+        <h1>WELCOME TO THE EMBER BLOG APP EXAMPLE</h1>
+        <p class="lead">This is an example application created with Ember.js & Bootstrap. Please use the navigation to continue.</p>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="posts/index">
+    <div class="col-lg-9 wow fadeInUp">
+      <div class="alert alert-warning fade in" role="alert">
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <strong>Please select a post!</strong>
+      </div>
+    </div>
+  </script>
+
+  <script src="js/libs/jquery-1.10.2.js"></script>
+  <script src="js/libs/handlebars-1.1.2.js"></script>
+  <script src="http://builds.emberjs.com/canary/ember.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/0.1.12/wow.min.js"></script>
+  <script src="js/app.js"></script>
+  <!-- to activate the test runner, add the "?test" query string parameter -->
+  <script src="tests/runner.js"></script>
+</body>
+</html>
